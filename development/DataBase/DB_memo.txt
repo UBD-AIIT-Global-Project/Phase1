@@ -1,0 +1,216 @@
+
+#データベース（名前はenpit.)
+
+CREATE DATABASE enpit ENCODING 'UTF8' LC_COLLATE 'en_US.UTF-8' LC_CTYPE 'en_US.UTF-8' TEMPLATE template0;
+
+
+#センサーデータ
+create table TBL20001_SENSOR_DATA (
+    SENSOR_ID      char(008) ,
+    STR_TIMESTAMP  char(014) ,
+    STR_YEAR       char(004)    not null,
+    STR_MON        varchar(002) not null,
+    STR_DAY        varchar(002) not null,
+    STR_HH         varchar(002) not null,
+    VALUE          char(008)    not null,
+    IVALUE         int8         not null,
+    TIMESTAMP      timestamp,
+  constraint KEY_NAME primary key(
+    SENSOR_ID,
+    STR_TIMESTAMP
+  )
+);
+
+#センサー
+create table TBL20002_SENSOR (
+    SENSOR_ID      char(008) primary key,
+    RASPI_ID       char(008) ,
+    SENSOR_TYPE_ID char(002) ,
+    INPUT_DATE          char(014) ,
+    LASTEUPDATE_DATE    char(014) ,
+    VOID_FLG            char(001)
+);
+
+#温度
+insert into TBL20002_SENSOR values('00000000','00000000','00','20101111120000');
+
+#湿度
+insert into TBL20002_SENSOR values('00000001','01000000','01','20101111120000');
+
+
+#位置
+insert into TBL20002_SENSOR values('00000002','02000000','02','20101111120000');
+
+
+#ラズベリーパイ
+create table TBL20003_RAS_PI (
+    RASPI_ID      char(008) primary key,
+    IP            char(016) ,
+    LOCATION_ID   char(008) ,
+    HOST          VARCHAR(005) ,
+    INPUT_DATE          char(014) ,
+    LASTEUPDATE_DATE    char(014) ,
+    VOID_FLG            char(001)
+);
+
+
+#ras1
+insert into TBL20003_RAS_PI values('00000000','192168000001','00000000','ras1','20101111120000','20101111120000','0');
+
+#ras2
+insert into TBL20003_RAS_PI values('01000000','192168000002','00000001','ras2','20101111120000','20101111120000','0');
+
+#ras3
+insert into TBL20003_RAS_PI values('02000000','192168000003','00000003','ras3','20101111120000','20101111120000','0');
+
+
+#エリアマスタ（地域をざっくり集約する）
+create table TBL30001_AREA_MASTER (
+    AREA_CODE           char(002) primary key,
+    AREA_NAME           varchar(050) not null,
+    INPUT_DATE          char(014) ,
+    LASTEUPDATE_DATE    char(014) ,
+    VOID_FLG            char(001)
+);
+
+#エリアＡ
+insert into TBL30001_AREA_MASTER values('00','AREA_A','20101111120000','20101111120000','0');
+
+#エリアＢ
+insert into TBL30001_AREA_MASTER values('01','AREA_B','20101111120000','20101111120000','0');
+
+#エリアＣ
+insert into TBL30001_AREA_MASTER values('02','AREA_C','20101111120000','20101111120000','0');
+
+
+
+#ロケーションマスタ
+create table TBL30002_LOCATION_MASTER (
+    LOCATION_ID         char(008) primary key,
+    AREA_CODE           char(002),
+    NAME                varchar(050) not null,
+    POST_NO             varchar(008) ,
+    ADDRESS             varchar(200) ,
+    LONGITUDE           varchar(010) ,
+    LATITUDE            varchar(010) ,
+    ELEVATION           varchar(005) ,
+    INPUT_DATE          char(014) ,
+    LASTEUPDATE_DATE    char(014) ,
+    VOID_FLG            char(001)
+);
+
+
+#センサータイプのマスタ
+create table TBL30003_SENSOR_TYPE_MASTER (
+    SENSOR_TYPE_ID      char(008) primary key,
+    NAME                varchar(020) not null,
+    INPUT_DATE          char(014) ,
+    LASTEUPDATE_DATE    char(014) ,
+    VOID_FLG            char(001)
+);
+
+
+
+
+enpit=> \d TBL20001_SENSOR_DATA;
+ sensor_id     | character(8)                | not null
+ str_timestamp | character(14)               | not null
+ value         | character(8)                | not null
+ ivalue        | bigint                      | not null
+ timestamp     | timestamp without time zone |
+
+# 温度
+insert into TBL20001_SENSOR_DATA values('00000000','20151111110000','2015','11','11','11','00000030',30,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000000','20151111111000','2015','11','11','11','00000030',30,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000000','20151111112000','2015','11','11','11','00000030',30,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000000','20151111113000','2015','11','11','11','00000033',33,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000000','20151111114000','2015','11','11','11','00000030',30,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000000','20151111115000','2015','11','11','11','00000032',32,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000000','20151111120000','2015','11','11','12','00000031',31,current_timestamp);
+
+# 湿度
+insert into TBL20001_SENSOR_DATA values('00000001','20151111110000','2015','11','11','11','00000050',50,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000001','20151111111000','2015','11','11','11','00000050',50,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000001','20151111112000','2015','11','11','11','00000050',50,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000001','20151111113000','2015','11','11','11','00000055',55,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000001','20151111114000','2015','11','11','11','00000060',60,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000001','20151111115000','2015','11','11','11','00000065',65,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000001','20151111120000','2015','11','11','12','00000066',66,current_timestamp);
+
+# 位置
+insert into TBL20001_SENSOR_DATA values('00000002','20151111110000','2015','11','11','11','00000150',150,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000002','20151111111000','2015','11','11','11','00000140',140,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000002','20151111112000','2015','11','11','11','00000130',130,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000002','20151111113000','2015','11','11','11','00000140',140,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000002','20151111114000','2015','11','11','11','00000150',150,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000002','20151111115000','2015','11','11','11','00000160',160,current_timestamp);
+insert into TBL20001_SENSOR_DATA values('00000002','20151111120000','2015','11','11','12','00000170',170,current_timestamp);
+
+enpit=> \dt
+ public | t01prefecture               | table | vagrant
+ public | tbl20001_sensor_data        | table | vagrant
+ public | tbl20002_sensor             | table | vagrant
+ public | tbl20003_ras_pi             | table | vagrant
+ public | tbl30001_area_master        | table | vagrant
+ public | tbl30002_location_master    | table | vagrant
+ public | tbl30003_sensor_type_master | table | vagrant
+
+enpit=> \d TBL20001_SENSOR_DATA
+ sensor_id     | character(8)                | not null
+ str_timestamp | character(14)               | not null
+ str_year      | character(4)                | not null
+ str_mon       | character varying(2)        | not null
+ str_day       | character varying(2)        | not null
+ str_hh        | character varying(2)        | not null
+ value         | character(8)                | not null
+ ivalue        | bigint                      | not null
+ timestamp     | timestamp without time zone |
+
+
+enpit=> \d tbl20002_sensor
+ sensor_id        | character(8)  | not null
+ raspi_id         | character(8)  |
+ sensor_type_id   | character(2)  |
+ input_date       | character(14) |
+ lasteupdate_date | character(14) |
+ void_flg         | character(1)  |
+
+enpit=> \d tbl20003_ras_pi
+ raspi_id         | character(8)         | not null
+ ip               | character(16)        |
+ location_id      | character(8)         |
+ host             | character varying(5) |
+ input_date       | character(14)        |
+ lasteupdate_date | character(14)        |
+ void_flg         | character(1)         |
+
+enpit=> \d TBL30001_AREA_MASTER
+ area_code        | character(2)          | not null
+ area_name        | character varying(50) | not null
+ input_date       | character(14)         |
+ lasteupdate_date | character(14)         |
+ void_flg         | character(1)          |
+
+enpit=> \d TBL30002_LOCATION_MASTER
+ location_id      | character(8)           | not null
+ area_code        | character(2)           |
+ name             | character varying(50)  | not null
+ post_no          | character varying(8)   |
+ address          | character varying(200) |
+ longitude        | character varying(10)  |
+ latitude         | character varying(10)  |
+ elevation        | character varying(5)   |
+ input_date       | character(14)          |
+ lasteupdate_date | character(14)          |
+ void_flg         | character(1)           |
+
+enpit=> \d TBL30003_SENSOR_TYPE_MASTER
+ sensor_type_id   | character(8)          | not null
+ name             | character varying(20) | not null
+ input_date       | character(14)         |
+ lasteupdate_date | character(14)         |
+ void_flg         | character(1)          |
+
+enpit=>
+
+
