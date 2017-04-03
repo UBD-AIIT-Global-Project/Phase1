@@ -19,8 +19,8 @@ Param=$MAC$timestamp
 cd /home/pi/Batch
 mv $LogName bkup/$timestamp.log 
 
-#python ./camera.py
-#sleep 5s
+python ./camera.py
+sleep 5s
 python ./bme280.py 
 python ./HC-SR04.py
 
@@ -50,5 +50,5 @@ echo $ENDREC
 
 cd /home/pi/Batch
 java FileClient $Param
-#java ImageClient $Param
+java ImageClient $Param
 echo "complete"
