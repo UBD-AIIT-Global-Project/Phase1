@@ -7,7 +7,7 @@ CODE_END="3"
 
 NO="00000001"
 KIND="000"
-MAC=`ifconfig | grep 'eth0' | grep 'HWaddr' | awk '{gsub(/:/, ""); print $5}'`
+MAC=`/sbin/ifconfig | grep 'eth0' | grep 'HWaddr' | awk '{gsub(/:/, ""); print $5}'`
 AREA="01"
 
 Logdate=`date "+%Y%m%d"`
